@@ -8,9 +8,10 @@ import Dashboard from "./pages/Dashboard";
 import ProductCreate from "./pages/ProductCreate";
 
 function App() {
+  const [account, setAccount] = React.useState(null);
   return (
     <div className="w-full h-screen mt-16">
-      <Header />
+      <Header account={account} setAccount={setAccount} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products/:id" element={<ProductDetails />} />

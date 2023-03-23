@@ -1,15 +1,39 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Web3 from "web3";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../contract";
 
 function ProductCreate() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [uri, setUri] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     console.log({ name, price, description });
+  };
+
+  const handleCreateProduct = async (e) => {
+    e.preventDefault();
+    console.log({ name, price, description, uri });
+    const web3 = new Web3(window.ethereum);
+    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    const account = accounts[0];
+
+    try {
+      const result = await contract.methods
+        .sell(name, description, uri, price)
+        .send({ from: account });
+    } catch (err) {
+      console.log(err);
+    }
+
+    console.log(result);
   };
 
   return (
@@ -18,7 +42,7 @@ function ProductCreate() {
       <div className="md:w-[50%] h-[40rem]">
         <form
           className="flex flex-col gap-4 bg-[#041938] p-6 rounded-md"
-          onSubmit={handleSubmit}
+          onSubmit={handleCreateProduct}
         >
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Name</label>
@@ -36,6 +60,15 @@ function ProductCreate() {
               className="bg-[#0e2240] p-3 rounded"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="price">URI</label>
+            <input
+              type="text"
+              className="bg-[#0e2240] p-3 rounded"
+              value={uri}
+              onChange={(e) => setUri(e.target.value)}
             />
           </div>
           <div className="flex flex-col gap-2">

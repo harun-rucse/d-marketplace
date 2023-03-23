@@ -2,7 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 
-function Header() {
+function Header({ account, setAccount }) {
+  const connect = async () => {
+    // connect to metamask
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    setAccount(accounts[0]);
+  };
   return (
     <header className="fixed w-full top-0 flex justify-center py-3 bg-[#006cff] shadow-lg">
       <div className="flex px-3 md:px-0 md:w-4/5 gap-6 md:gap-0 items-center justify-between">
@@ -19,8 +26,16 @@ function Header() {
           Decentralized Marketplace
         </Link>
         <div className="flex items-center gap-4">
-          <button className="bg-gray-50 hover:bg-gray-300 px-2 md:px-4 py-1 rounded-xl text-gray-700 text-sm md:text-lg font-semibold">
-            Connect
+          <button
+            className="bg-gray-50 hover:bg-gray-300 px-2 md:px-4 py-1 rounded-xl text-gray-700 text-sm md:text-lg font-semibold"
+            onClick={connect}
+            disabled={account}
+          >
+            {account
+              ? account.substring(0, 4) +
+                "***" +
+                account.substring(account.length - 4, account.length)
+              : "Connect"}
             <BsArrowRight className="inline-block ml-2" />
           </button>
           <Link
