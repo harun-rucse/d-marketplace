@@ -1,15 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
+import { useAccountDispatch, useAccount } from "../context/AccountContext";
 
-function Header({ account, setAccount }) {
+function Header() {
+  const dispatch = useAccountDispatch();
+  const account = useAccount();
   const connect = async () => {
     // connect to metamask
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
-    setAccount(accounts[0]);
+    const account = accounts[0];
+    dispatch({ type: "SET_ACCOUNT", payload: account });
   };
+
+  //handle account change from metamask
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        // console.log(accounts);
+        if (accounts.length > 0) {
+          dispatch({ type: "SET_ACCOUNT", payload: accounts[0] });
+        } else {
+          dispatch({ type: "SET_ACCOUNT", payload: null });
+        }
+      });
+    }
+  }, []);
+
   return (
     <header className="fixed w-full top-0 flex justify-center py-3 bg-[#006cff] shadow-lg">
       <div className="flex px-3 md:px-0 md:w-4/5 gap-6 md:gap-0 items-center justify-between">
@@ -29,12 +48,15 @@ function Header({ account, setAccount }) {
           <button
             className="bg-gray-50 hover:bg-gray-300 px-2 md:px-4 py-1 rounded-xl text-gray-700 text-sm md:text-lg font-semibold"
             onClick={connect}
-            disabled={account}
+            disabled={account.account}
           >
-            {account
-              ? account.substring(0, 4) +
+            {account.account
+              ? account.account.substring(0, 4) +
                 "***" +
-                account.substring(account.length - 4, account.length)
+                account.account.substring(
+                  account.account.length - 4,
+                  account.account.length
+                )
               : "Connect"}
             <BsArrowRight className="inline-block ml-2" />
           </button>

@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../contract";
+import { useAccount } from "../context/AccountContext";
 
 function ProductCreate() {
+  const accountCtx = useAccount();
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -11,13 +14,8 @@ function ProductCreate() {
 
   const handleCreateProduct = async (e) => {
     e.preventDefault();
-    console.log({ name, price, description, uri });
-    const web3 = new Web3(window.ethereum);
-    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    const account = accounts[0];
+    // console.log({ name, price, description, uri });
+    const account = accountCtx.account;
 
     try {
       const result = await contract.methods
@@ -26,8 +24,6 @@ function ProductCreate() {
     } catch (err) {
       console.log(err);
     }
-
-    console.log(result);
   };
 
   return (
