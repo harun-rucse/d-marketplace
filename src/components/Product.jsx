@@ -1,7 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAccount } from "../context/AccountContext";
+import Web3 from "web3";
+import useContract from "../hooks/useContract";
 
-function Product({ product,id}) {
+function Product({ product, id }) {
+  const accountCtx = useAccount();
+  const { contract } = useContract();
+  const account = accountCtx.account;
+
+  const productBuyHandler = async () => {
+    // console.log(account);
+    try {
+      const result = await contract.methods.buy(id).send({
+        value: Web3.utils.toWei(product["_value"], "ether"),
+        from: account,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="bg-[#041938] max-w-[20rem] h-[29rem] rounded overflow-hidden shadow-lg p-4 flex flex-col justify-between ">
       <Link to={`/products/${id}`} className="div">
@@ -17,7 +35,10 @@ function Product({ product,id}) {
         </div>
         <p className="text-gray-300 text-2xl">{product["_value"]}ETH</p>
         <p className="text-gray-400 text-base">{product["_description"]}</p>
-        <button className="bg-[#006cff] text-white px-3 py-2 rounded text-sm font-semibold hover:scale-105 transition-all duration-300">
+        <button
+          onClick={productBuyHandler}
+          className="bg-[#006cff] text-white px-3 py-2 rounded text-sm font-semibold hover:scale-105 transition-all duration-300"
+        >
           Buy now
         </button>
       </div>

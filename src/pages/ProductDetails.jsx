@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Web3 from "web3";
 import { useAccount } from "../context/AccountContext";
 import useContract from "../hooks/useContract";
+import useBuyContract from "../hooks/useBuyContract";
 
 function ProductDetails() {
   const accountCtx = useAccount();
@@ -12,6 +13,7 @@ function ProductDetails() {
   const [productId, setProductId] = useState(null);
 
   const { contract } = useContract();
+  // const { useBuyContract } = useBuyContract(accountCtx.account, contract);
 
   // get the product
   const getProduct = async () => {
@@ -37,7 +39,7 @@ function ProductDetails() {
 
   const productBuyHandler = async () => {
     const account = accountCtx.account;
-    console.log(account);
+    // console.log(account);
     try {
       const result = await contract.methods.buy(productId).send({
         value: Web3.utils.toWei(product["_value"], "ether"),
