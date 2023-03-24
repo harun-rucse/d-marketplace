@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Web3 from "web3";
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../contract";
 import { useAccount } from "../context/AccountContext";
+import useContract from "../hooks/useContract";
 
 function ProductCreate() {
   const accountCtx = useAccount();
@@ -11,6 +10,8 @@ function ProductCreate() {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [uri, setUri] = useState("");
+
+  const { contract } = useContract();
 
   const handleCreateProduct = async (e) => {
     e.preventDefault();
