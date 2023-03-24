@@ -3,22 +3,17 @@ import { Link } from "react-router-dom";
 import { useAccount } from "../context/AccountContext";
 import Web3 from "web3";
 import useContract from "../hooks/useContract";
+import useBuycontract from "../hooks/useBuycontract";
 
 function Product({ product, id }) {
   const accountCtx = useAccount();
   const { contract } = useContract();
   const account = accountCtx.account;
+  const { buy } = useBuycontract();
 
   const productBuyHandler = async () => {
-    // console.log(account);
-    try {
-      const result = await contract.methods.buy(id).send({
-        value: Web3.utils.toWei(product["_value"], "ether"),
-        from: account,
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    const success = await buy(accountCtx.account, contract, product, id);
+    console.log(success);
   };
   return (
     <div className="bg-[#041938] max-w-[20rem] h-[29rem] rounded overflow-hidden shadow-lg p-4 flex flex-col justify-between ">

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Web3 from "web3";
 import { useAccount } from "../context/AccountContext";
 import useContract from "../hooks/useContract";
-import useBuyContract from "../hooks/useBuyContract";
+import useBuycontract from "../hooks/useBuycontract";
 
 function ProductDetails() {
   const accountCtx = useAccount();
@@ -13,7 +13,7 @@ function ProductDetails() {
   const [productId, setProductId] = useState(null);
 
   const { contract } = useContract();
-  // const { useBuyContract } = useBuyContract(accountCtx.account, contract);
+  const { buy } = useBuycontract();
 
   // get the product
   const getProduct = async () => {
@@ -38,16 +38,8 @@ function ProductDetails() {
   }, [productId]);
 
   const productBuyHandler = async () => {
-    const account = accountCtx.account;
-    // console.log(account);
-    try {
-      const result = await contract.methods.buy(productId).send({
-        value: Web3.utils.toWei(product["_value"], "ether"),
-        from: account,
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    const success = await buy(accountCtx.account, contract, product, productId);
+    // console.log(success);
   };
   return (
     <div className="flex flex-col w-full min-h-[93vh] px-6 md:px-32 mt-24">
