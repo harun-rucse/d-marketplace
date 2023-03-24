@@ -9,12 +9,6 @@ function ProductCreate() {
   const [description, setDescription] = useState("");
   const [uri, setUri] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log({ name, price, description });
-  };
-
   const handleCreateProduct = async (e) => {
     e.preventDefault();
     console.log({ name, price, description, uri });
@@ -27,7 +21,7 @@ function ProductCreate() {
 
     try {
       const result = await contract.methods
-        .sell(name, description, uri, price)
+        .sell(name, description, uri, web3.utils.toWei(price, "ether"))
         .send({ from: account });
     } catch (err) {
       console.log(err);
