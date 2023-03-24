@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Web3 from "web3";
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../contract";
 import { useAccount } from "../context/AccountContext";
 import useContract from "../hooks/useContract";
 
@@ -38,9 +37,10 @@ function ProductDetails() {
 
   const productBuyHandler = async () => {
     const account = accountCtx.account;
+    console.log(account);
     try {
       const result = await contract.methods.buy(productId).send({
-        value: web3.utils.toWei(product[2], "ether"),
+        value: Web3.utils.toWei(product["_value"], "ether"),
         from: account,
       });
     } catch (err) {
