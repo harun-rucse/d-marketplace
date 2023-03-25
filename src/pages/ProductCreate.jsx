@@ -18,7 +18,7 @@ function ProductCreate() {
     e.preventDefault();
     // console.log({ name, price, description, uri });
     const account = accountCtx.account;
-    
+
     //TODO: validate the form
 
     try {
@@ -85,7 +85,7 @@ function ProductCreate() {
           {/* Button */}
           <div className="mt-6 flex items-center gap-6">
             <Link
-              to="/dashboard"
+              to="/"
               className="bg-[#3d9706] px-6 py-2 rounded-md text-white"
             >
               Back

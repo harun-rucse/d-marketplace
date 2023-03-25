@@ -19,8 +19,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<ProductDetails />} />
-          <Route path="/dashboard/products" element={<ProductCreate />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<ProductCreate />} />
+          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         </Routes>
         <Footer />
         <ToastContainer />

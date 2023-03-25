@@ -71,7 +71,7 @@ function Header() {
             to="/dashboard"
             className="bg-gray-900 hover:bg-gray-800 px-2 md:px-4 py-1 rounded-xl text-gray-300 text-sm md:text-lg font-semibold"
           >
-            Admin
+            Seller
             <BsArrowRight className="inline-block ml-2" />
           </Link>
         </div>
