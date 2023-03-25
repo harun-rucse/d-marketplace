@@ -5,6 +5,7 @@ import { useAccount } from "../context/AccountContext";
 import useContract from "../hooks/useContract";
 import useBuycontract from "../hooks/useBuycontract";
 import { toast } from "react-toastify";
+import img1 from "../assets/1.png";
 
 function ProductDetails() {
   const accountCtx = useAccount();
@@ -76,11 +77,7 @@ function ProductDetails() {
     <div className="flex flex-col w-full min-h-[93vh] px-6 md:px-32 mt-24">
       <div className="flex flex-col md:flex-row gap-12">
         <div className="w-full md:w-[40%]">
-          <img
-            src="https://www.freepnglogos.com/uploads/lamborghini-png/lamborghini-aventador-clipart-look-clip-art-images-31.png"
-            alt=""
-            className="w-full object-contain"
-          />
+          <img src={img1} alt="" className="h-full object-contain" />
         </div>
         <div className="flex md:w-1/2 flex-col gap-6">
           <h1 className="text-2xl md:text-3xl text-gray-200 font-semibold border-b border-gray-700 pb-4">

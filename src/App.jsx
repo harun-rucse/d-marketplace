@@ -4,7 +4,6 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
-import Dashboard from "./pages/Dashboard";
 import ProductCreate from "./pages/ProductCreate";
 import { AccountProvider } from "./context/AccountContext";
 import { ToastContainer } from "react-toastify";

@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAccount } from "../context/AccountContext";
-import Web3 from "web3";
 import useContract from "../hooks/useContract";
 import useBuycontract from "../hooks/useBuycontract";
 import { toast } from "react-toastify";
+import img1 from "../assets/1.png";
 
 function Product({ product, id }) {
   const accountCtx = useAccount();
@@ -19,19 +19,15 @@ function Product({ product, id }) {
       // console.log(error);
       if (error.code && error.code === 4001) {
         toast.error("transaction failed! " + error.message);
-      }else{
+      } else {
         toast.error("please connect metamask");
       }
     }
   };
   return (
-    <div className="bg-[#041938] max-w-[20rem] h-[29rem] rounded overflow-hidden shadow-lg p-4 flex flex-col justify-between ">
+    <div className="bg-[#041938] max-w-[20rem] min-h-[29rem] rounded overflow-hidden shadow-lg p-4 flex flex-col justify-between ">
       <Link to={`/products/${id}`} className="div">
-        <img
-          className="w-full"
-          src="https://www.freepnglogos.com/uploads/lamborghini-png/lamborghini-aventador-clipart-look-clip-art-images-31.png"
-          alt="Sunset in the mountains"
-        />
+        <img className="w-full" src={img1} alt="Sunset in the mountains" />
       </Link>
       <div className="px-6 py-4 flex flex-col gap-4">
         <div className="font-semibold text-xl text-gray-200">
