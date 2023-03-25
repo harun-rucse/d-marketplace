@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { useAccount } from "../context/AccountContext";
 import useContract from "../hooks/useContract";
 import useBuycontract from "../hooks/useBuycontract";
+import { toast } from "react-toastify";
 
 function ProductDetails() {
   const accountCtx = useAccount();
@@ -11,6 +12,7 @@ function ProductDetails() {
   const params = useParams();
   const [product, setProduct] = useState(null);
   const [productId, setProductId] = useState(null);
+  const [boughtUri, setBoughtUri] = useState(null);
 
   const { contract } = useContract();
   const { buy } = useBuycontract();
@@ -25,7 +27,7 @@ function ProductDetails() {
       // console.log(product);
       setProduct(product);
     } catch (er) {
-      console.log(er);
+      // console.log(er);
     }
   };
 
@@ -37,9 +39,38 @@ function ProductDetails() {
     getProduct();
   }, [productId]);
 
+  const getProductBoughtUriHandler = async () => {
+    try {
+      const result = await contract.methods
+        .showBoughtURI(productId)
+        .call({ from: accountCtx.account });
+      setBoughtUri(result);
+      // console.log(result);
+    } catch (error) {
+      // console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProductBoughtUriHandler();
+  }, [product, accountCtx.account]);
+
   const productBuyHandler = async () => {
-    const success = await buy(accountCtx.account, contract, product, productId);
-    // console.log(success);
+    try {
+      const success = await buy(
+        accountCtx.account,
+        contract,
+        product,
+        productId
+      );
+      toast.success("Product bought successfully");
+    } catch (error) {
+      if (error.code && error.code === 4001) {
+        toast.error("transaction failed! " + error.message);
+      } else {
+        toast.error("please connect metamask");
+      }
+    }
   };
   return (
     <div className="flex flex-col w-full min-h-[93vh] px-6 md:px-32 mt-24">
@@ -74,6 +105,7 @@ function ProductDetails() {
         <p className="text-gray-400 md:text-xl">
           {product && product["_description"]}
         </p>
+        <p className="text-gray-400 md:text-xl mt-4">{boughtUri}</p>
       </div>
     </div>
   );

@@ -7,9 +7,11 @@ import ProductDetails from "./pages/ProductDetails";
 import Dashboard from "./pages/Dashboard";
 import ProductCreate from "./pages/ProductCreate";
 import { AccountProvider } from "./context/AccountContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  
+
   return (
     <AccountProvider>
       <div className="w-full h-screen mt-16">
@@ -21,6 +23,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
         <Footer />
+        <ToastContainer />
       </div>
     </AccountProvider>
   );

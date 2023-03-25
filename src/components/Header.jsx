@@ -2,17 +2,22 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import { useAccountDispatch, useAccount } from "../context/AccountContext";
+import { toast } from "react-toastify";
 
 function Header() {
   const dispatch = useAccountDispatch();
   const account = useAccount();
   const connect = async () => {
-    // connect to metamask
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    const account = accounts[0];
-    dispatch({ type: "SET_ACCOUNT", payload: account });
+    if (window.ethereum) {
+      // connect to metamask
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const account = accounts[0];
+      dispatch({ type: "SET_ACCOUNT", payload: account });
+    } else {
+      toast.info("Metamask not found");
+    }
   };
 
   //handle account change from metamask
@@ -26,6 +31,8 @@ function Header() {
           dispatch({ type: "SET_ACCOUNT", payload: null });
         }
       });
+    } else {
+      toast.info("Metamask not found");
     }
   }, []);
 

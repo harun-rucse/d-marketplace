@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import Web3 from "web3";
+import useContract from "../hooks/useContract";
+import { useAccount } from "../context/AccountContext";
 
 const CardItem = ({ title, value }) => {
   return (
@@ -11,6 +14,46 @@ const CardItem = ({ title, value }) => {
 };
 
 function Dashboard() {
+  const { contract } = useContract();
+  const [totalProducts, setTotalProducts] = React.useState(0);
+  const [totalOrders, setTotalOrders] = React.useState(0);
+
+  const accountCtx = useAccount();
+  const account = accountCtx.account;
+
+  const getTotalNumberOfProducts = async () => {
+    try {
+      const totalSells = await contract.methods.totalSells().call();
+      setTotalProducts(totalSells);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getTotalOrders = async () => {
+    // console.log(contract, account);
+    if (contract && account) {
+      // console.log("here");
+      try {
+        const orders = await contract.methods.boughtProducts(account).call();
+        setTotalOrders(orders.length);
+        console.log(orders);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  useEffect(
+    () => {
+      getTotalNumberOfProducts();
+    },
+    [account],
+    totalProducts
+  );
+  useEffect(() => {
+    getTotalOrders();
+  }, [totalProducts, account]);
   return (
     <div className="flex w-full min-h-[93vh]">
       <div className="flex flex-col md:flex-row w-full">
@@ -28,8 +71,8 @@ function Dashboard() {
         {/* Main content */}
         <div className="w-full p-8">
           <div className="flex flex-col md:flex-row gap-8">
-            <CardItem title="Total Products" value="100" />
-            <CardItem title="Total Orders" value="100" />
+            <CardItem title="Total Products" value={totalProducts} />
+            <CardItem title="Total Orders" value={totalOrders} />
             <CardItem title="Total Revenue" value="100" />
           </div>
           <button className="bg-[#006cff] px-4 py-3 rounded mt-6">

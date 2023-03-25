@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAccount } from "../context/AccountContext";
 import useContract from "../hooks/useContract";
-
+import Web3 from "web3";
+import { toast } from "react-toastify";
 function ProductCreate() {
   const accountCtx = useAccount();
 
@@ -17,13 +18,18 @@ function ProductCreate() {
     e.preventDefault();
     // console.log({ name, price, description, uri });
     const account = accountCtx.account;
+    
+    //TODO: validate the form
 
     try {
       const result = await contract.methods
-        .sell(name, description, uri, web3.utils.toWei(price, "ether"))
+        .sell(name, description, uri, Web3.utils.toWei(price, "ether"))
         .send({ from: account });
+
+      toast.success("Product created successfully.");
     } catch (err) {
-      console.log(err);
+      // console.log(err);
+      toast.error("Failed to create product." + err.message);
     }
   };
 
@@ -41,6 +47,7 @@ function ProductCreate() {
               type="text"
               className="bg-[#0e2240] p-3 rounded"
               value={name}
+              required
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -48,6 +55,7 @@ function ProductCreate() {
             <label htmlFor="price">Price</label>
             <input
               type="number"
+              required
               className="bg-[#0e2240] p-3 rounded"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
@@ -57,6 +65,7 @@ function ProductCreate() {
             <label htmlFor="price">URI</label>
             <input
               type="text"
+              required
               className="bg-[#0e2240] p-3 rounded"
               value={uri}
               onChange={(e) => setUri(e.target.value)}
@@ -67,6 +76,7 @@ function ProductCreate() {
             <textarea
               cols="30"
               rows="10"
+              required
               className="bg-[#0e2240] p-3 rounded"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
