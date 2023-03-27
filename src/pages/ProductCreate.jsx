@@ -34,7 +34,7 @@ function ProductCreate() {
   };
 
   return (
-    <div className="flex w-full min-h-[93vh] justify-center mt-28">
+    <div className="flex w-full min-h-[93vh] justify-center mt-28 mb-32 md:mb-20">
       {/* Product create form */}
       <div className="md:w-[50%] h-[40rem]">
         <form

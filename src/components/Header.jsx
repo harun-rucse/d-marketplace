@@ -58,10 +58,10 @@ function Header() {
             disabled={account.account}
           >
             {account.account
-              ? account.account.substring(0, 4) +
+              ? account.account.substring(0, 3) +
                 "***" +
                 account.account.substring(
-                  account.account.length - 4,
+                  account.account.length - 2,
                   account.account.length
                 )
               : "Connect"}

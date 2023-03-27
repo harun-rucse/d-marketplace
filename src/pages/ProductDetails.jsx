@@ -6,6 +6,7 @@ import useContract from "../hooks/useContract";
 import useBuycontract from "../hooks/useBuycontract";
 import { toast } from "react-toastify";
 import img1 from "../assets/1.png";
+import Loader from "../components/Loader";
 
 function ProductDetails() {
   const accountCtx = useAccount();
@@ -14,6 +15,7 @@ function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [productId, setProductId] = useState(null);
   const [boughtUri, setBoughtUri] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { contract } = useContract();
   const { buy } = useBuycontract();
@@ -21,6 +23,7 @@ function ProductDetails() {
   // get the product
   const getProduct = async () => {
     try {
+      setLoading(true);
       const product = await contract.methods.getContract(productId).call();
 
       product["_value"] = Web3.utils.fromWei(product["_value"], "ether");
@@ -30,6 +33,7 @@ function ProductDetails() {
     } catch (er) {
       // console.log(er);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -73,6 +77,9 @@ function ProductDetails() {
       }
     }
   };
+
+  if (loading) return <Loader />;
+
   return (
     <div className="flex flex-col w-full min-h-[93vh] px-6 md:px-32 mt-24">
       <div className="flex flex-col md:flex-row gap-12">

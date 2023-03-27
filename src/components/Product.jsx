@@ -27,7 +27,11 @@ function Product({ product, id }) {
   return (
     <div className="bg-[#041938] max-w-[20rem] min-h-[29rem] rounded overflow-hidden shadow-lg p-4 flex flex-col justify-between ">
       <Link to={`/products/${id}`} className="div">
-        <img className="w-full" src={img1} alt="Sunset in the mountains" />
+        <img
+          className="w-52 mx-auto"
+          src={img1}
+          alt="Sunset in the mountains"
+        />
       </Link>
       <div className="px-6 py-4 flex flex-col gap-4">
         <div className="font-semibold text-xl text-gray-200">

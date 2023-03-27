@@ -10,10 +10,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-
   return (
     <AccountProvider>
-      <div className="w-full h-screen mt-16">
+      <div className="flex flex-col min-h-screen mt-16 relative">
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
